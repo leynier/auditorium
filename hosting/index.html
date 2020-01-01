@@ -63,7 +63,7 @@
     <a class="current" href="./">Hosting</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#hosting-options">Hosting options</a></li>
+    <li class="toctree-l2"><a href="#hosting-options">Hosting Options</a></li>
     
         <ul>
         
@@ -122,10 +122,11 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="hosting-options">Hosting options</h1>
+                <h1 id="hosting-options">Hosting Options</h1>
 <h2 id="hosting-a-slideshow-at-nowsh">Hosting a slideshow at <code>now.sh</code></h2>
-<p><a href="https://apiad.net/auditorium"><img alt="Made with Auditorium" src="https://img.shields.io/badge/made--with-auditorium-blue"></img></a></p>
-<p>This folder shows the layout you need to comply with for hosting a slideshow at <a href="https://now.sh">now.sh</a>, such that the backend logic works as well. If you don't know what <a href="https://now.sh">now.sh</a> is, go and <a href="https://zeit.co/docs">read about it</a> first.</p>
+<p>Another option is to host the static presentation and backend at <a href="https://now.sh">now.sh</a>.
+If you don't know what <a href="https://now.sh">now.sh</a> is, go and <a href="https://zeit.co/docs">read about it</a> first.
+The <a href="https://github.com/apiad/auditorium/tree/master/demo">demo</a> folder folder shows the layout you need to comply with for hosting a slideshow at <a href="https://now.sh">now.sh</a>, such that the backend logic works as well.</p>
 <p>In short, these are the basic steps:</p>
 <ol>
 <li>Make sure your <code>slideshow.py</code> (or whatever the name) slideshow file has the following line:</li>
@@ -136,7 +137,7 @@ show = Show(&quot;My Awesome Show&quot;)
 app = show.app # &lt;--- This line
 </code></pre>
 
-<p>This will allow <code>now.sh</code> serverless functions to find your slideshow's underlying <code>sanic</code> application, and automagically make the backend logic work.</p>
+<p>This will allow <code>now.sh</code> serverless functions to find your slideshow's underlying <code>fastapi</code> application, and automagically make the backend logic work.</p>
 <ol>
 <li>Make a folder for uploading to <code>now.sh</code>, let's call it <code>my-show</code> and an <code>api</code> folder inside.</li>
 </ol>
@@ -175,7 +176,7 @@ matplotlib # Stuff you use in your slides
 </code></pre>
 
 <ol>
-<li><a href="https://zeit.co/docs#install-now-cli">Install</a> and run <code>now</code> inside the <code>my-show</code> folder.</li>
+<li><a href="https://zeit.co/docs#install-now-cli">Install</a> and run <code>now</code> inside the <code>my-show</code> folder. If you are using the <a href="https://hub.docker.com/r/auditorium/auditorium-dev">development docker images</a>, <code>now</code> is already installed for you.</li>
 </ol>
               
             </div>
