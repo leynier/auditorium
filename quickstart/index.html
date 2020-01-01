@@ -225,7 +225,7 @@ with ctx.columns(2) as cl:
 </code></pre>
 
 <p>An instance named <code>ctx</code> will be magically available in every Python code section. Beware that <strong>local variables are not persisted</strong> between different code sections. This is a by-design decision to save you a bunch of headaches, believe me.
-If you want variables to persist accross code sections, add <code>:persist</code> in the code declaration section. This also let's you interpolate Python variables directly inside the Markdown content.</p>
+If you want variables to persist across code sections, add <code>:persist</code> in the code declaration section. This also let's you interpolate Python variables directly inside the Markdown content.</p>
 <pre><code class="markdown">```python  :run :persist
 text = ctx.text_input(&quot;World&quot;)
 ```
