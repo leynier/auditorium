@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Important Considerations - Auditorium</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Important Considerations";
+    var mkdocs_page_input_path = "consider.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Auditorium</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../quickstart/">Quick Start</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../hosting/">Hosting</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Important Considerations</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#where-is-the-catch">Where is the catch?</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#slides-need-to-be-fast">Slides need to be fast</a></li>
+        
+            <li><a class="toctree-l3" href="#all-slides-are-executed-on-load">All slides are executed on load</a></li>
+        
+            <li><a class="toctree-l3" href="#slides-have-to-be-stateless">Slides have to be stateless</a></li>
+        
+            <li><a class="toctree-l3" href="#watch-out-for-code-injection">Watch out for code injection!</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../contributing/">Contributing</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../history/">History</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Auditorium</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Important Considerations</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="where-is-the-catch">Where is the catch?</h1>
+<p>Auditorium covers a fairly simple use case that I haven't seen solved for a long time.
+I came up with this idea while trying to make better slideshows for my lectures at the University of Havana.
+I usually need to display complex math stuff and graphs, ideally animated, and sometimes make modifications on the fly according to the interaction with students.
+They could ask how a function would look if some parameters where changed, etc.</p>
+<p>Along that path I grew up from Power Point to JavaScript-based slides (like <a href="https://revealjs.com">reveal.sj</a>) and sometimes even coded some simple behavior in JS, like changing a chart's parameters.
+However, for the most complex stuff I wanted to use Python, because otherwise I would need to redo a lot of coding in JS.
+For example, I'm teaching compilers now, and I want to show interactively how a parse tree is built for a regular expression.
+I simply cannot rewrite my regex engine in JS just for a slideshow.</p>
+<p>Then I discovered <a href="https://streamlit.io">streamlit</a> and for a while tried to move my slides to streamlit format.
+Streamlit is awesome, but is aimed at a completely different use case.
+It's quite cumbersome to force it to behave like a slideshow, the flow is not natural, and the styling options are very restrictive.
+On the other hand, they handle a lot of complex scenarios which I simply don't need in a slideshow, like caching and a lot of magic with Pandas and Numpy.
+Contrary to streamlit, I do want custom CSS and HTML to be easy to inject, because styling is very important in slides.</p>
+<p>So I decided to write my own slideshow generator, just for my simple use cases.
+That being said, there are some known deficiencies that I might fix, and some others which I probably will not, even in the long run.</p>
+<h2 id="slides-need-to-be-fast">Slides need to be fast</h2>
+<p>A slide's code is executed completely every time that slide needs to be rendered.
+That is, once during loading and then when inputs change or animations tick.
+Hence, you slide logic should be fairly fast.
+This is particularly true for animations, so don't expect to be able to train a neural network in real time.
+The slide logic is meant to be simple, the kind of one-liners you can run every keystroke, like less than 1 second fast.
+If you need to interactively draw the loss value of a neural network, either is gonna take a while or you will have to fake it, i.e., compute it offline and then simply animate it.</p>
+<h2 id="all-slides-are-executed-on-load">All slides are executed on load</h2>
+<p>For now, on the first load all slides are going to be run, which might increase significantly your loading time if you have complex logic in each slide.
+At some point, if I run into the problem, I may add a "lazy" loading option so that only the first few slides are executed.
+If this is an issue for a lot of people it might become a priority.</p>
+<h2 id="slides-have-to-be-stateless">Slides have to be stateless</h2>
+<p>The code that runs inside a slide should not depend on anything outside of <code>ctx</code>, since you have no guarantee when will it be executed.
+Right now, slide's code is executed once before any rendering in order to discover vertical slides, then again during the
+initial rendering to layout and then everytime an interaction or animation forces the slide to render again.
+However, this might be changed at any time, so make no assumptions as to when is that code executed.
+The easiest way to do this, is making sure that every slide function is a pure function and all state is handled through
+<code>ctx</code> interactive items, such as <code>ctx.text_input</code>.</p>
+<h2 id="watch-out-for-code-injection">Watch out for code injection!</h2>
+<p>It is very tempting to do things like getting a text from an input box and passing it through <code>eval</code> in Python, so that you can render different functions interactively.
+As long as you serve your presentations on <code>localhost</code> and show them yourself, feel free.
+However, beware when hosting presentations online.
+Since the backend code runs in your computer, a viewer could inject nasty stuff such as importing <code>os</code> and deleting your home folder! In the future I might add a <code>--safe</code> option that only allows for animations and other interactive behaviors that don't use input directly from the user.
+Staying away from <code>eval</code> and <code>exec</code> should keep you safe in most scenarios, but the basic suggestion is don't do anything you wouldn't do in a regular web application, since all security issues are the same.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../contributing/" class="btn btn-neutral float-right" title="Contributing">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../hosting/" class="btn btn-neutral" title="Hosting"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../hosting/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../contributing/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

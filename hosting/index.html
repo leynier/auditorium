@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Hosting - Auditorium</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Hosting";
+    var mkdocs_page_input_path = "hosting.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Auditorium</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../quickstart/">Quick Start</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Hosting</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#hosting-options">Hosting options</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#hosting-a-slideshow-at-nowsh">Hosting a slideshow at now.sh</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../consider/">Important Considerations</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../contributing/">Contributing</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../history/">History</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Auditorium</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Hosting</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="hosting-options">Hosting options</h1>
+<h2 id="hosting-a-slideshow-at-nowsh">Hosting a slideshow at <code>now.sh</code></h2>
+<p><a href="https://apiad.net/auditorium"><img alt="Made with Auditorium" src="https://img.shields.io/badge/made--with-auditorium-blue"></img></a></p>
+<p>This folder shows the layout you need to comply with for hosting a slideshow at <a href="https://now.sh">now.sh</a>, such that the backend logic works as well. If you don't know what <a href="https://now.sh">now.sh</a> is, go and <a href="https://zeit.co/docs">read about it</a> first.</p>
+<p>In short, these are the basic steps:</p>
+<ol>
+<li>Make sure your <code>slideshow.py</code> (or whatever the name) slideshow file has the following line:</li>
+</ol>
+<pre><code class="python">from auditorium import Show
+
+show = Show(&quot;My Awesome Show&quot;)
+app = show.app # &lt;--- This line
+</code></pre>
+
+<p>This will allow <code>now.sh</code> serverless functions to find your slideshow's underlying <code>sanic</code> application, and automagically make the backend logic work.</p>
+<ol>
+<li>Make a folder for uploading to <code>now.sh</code>, let's call it <code>my-show</code> and an <code>api</code> folder inside.</li>
+</ol>
+<pre><code class="bash">mkdir -p /path/to/my-show/api
+</code></pre>
+
+<ol>
+<li>Render the HTML.</li>
+</ol>
+<pre><code class="bash">auditorium render /path/to/slideshow.py &gt; /path/to/my-show/index.html
+</code></pre>
+
+<ol>
+<li>Have your <code>slideshow.py</code> copied to <code>my-show/api/update.py</code></li>
+</ol>
+<pre><code class="bash">cp /path/to/slideshow.py /path/to/my-show/api/update.py
+</code></pre>
+
+<ol>
+<li>Add a <code>now.json</code> file with an adequate configuration. This one works for the demo (replace <code>name</code> with your name):</li>
+</ol>
+<pre><code class="json">{
+    &quot;name&quot;: &quot;auditorium-demo&quot;,
+    &quot;rewrites&quot;: [
+        { &quot;source&quot;: &quot;/&quot;, &quot;destination&quot;: &quot;/index.html&quot; },
+        { &quot;source&quot;: &quot;/update&quot;, &quot;destination&quot;: &quot;/api/update&quot; }
+    ]
+}
+</code></pre>
+
+<ol>
+<li>Add a <code>requirements.txt</code> file with your requirements. This one works for the demo:</li>
+</ol>
+<pre><code class="ini">auditorium # This is basically mandatory :)
+matplotlib # Stuff you use in your slides
+</code></pre>
+
+<ol>
+<li><a href="https://zeit.co/docs#install-now-cli">Install</a> and run <code>now</code> inside the <code>my-show</code> folder.</li>
+</ol>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../consider/" class="btn btn-neutral float-right" title="Important Considerations">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../quickstart/" class="btn btn-neutral" title="Quick Start"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../quickstart/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../consider/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>
