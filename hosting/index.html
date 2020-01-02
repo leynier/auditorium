@@ -63,11 +63,19 @@
     <a class="current" href="./">Hosting</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#hosting-options">Hosting Options</a></li>
+    <li class="toctree-l2"><a href="#hosting-your-slideshow">Hosting your slideshow</a></li>
     
         <ul>
         
-            <li><a class="toctree-l3" href="#hosting-a-slideshow-at-nowsh">Hosting a slideshow at now.sh</a></li>
+            <li><a class="toctree-l3" href="#hosting-on-a-local-network">Hosting on a local network</a></li>
+        
+            <li><a class="toctree-l3" href="#hosting-freely-with-auditorium-publish">Hosting freely with auditorium publish</a></li>
+        
+            <li><a class="toctree-l3" href="#hosting-temporarily-through-ngrok">Hosting temporarily through ngrok</a></li>
+        
+            <li><a class="toctree-l3" href="#hosting-static-files-at-github-pages">Hosting static files at Github Pages</a></li>
+        
+            <li><a class="toctree-l3" href="#hosting-as-serverless-functions-at-nowsh">Hosting as serverless functions at now.sh</a></li>
         
         </ul>
     
@@ -122,43 +130,97 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="hosting-options">Hosting Options</h1>
-<h2 id="hosting-a-slideshow-at-nowsh">Hosting a slideshow at <code>now.sh</code></h2>
+                <h1 id="hosting-your-slideshow">Hosting your slideshow</h1>
+<p>If you are presenting on a big screen connected to your own computer, all you need to do is
+<code>auditorium run [file]</code>, and you can present from <a href="http://localhost:6789">localhost:6789</a> as usual.</p>
+<p>However, there are many cases where you are either not presenting from your computer, or you want
+to host your slideshow publicly for others to follow. Here are some ideas.</p>
+<h2 id="hosting-on-a-local-network">Hosting on a local network</h2>
+<p>If the audience can ping your computer, then the easiest solution to
+simply do:</p>
+<pre><code class="bash">auditorium run [file] --host=0.0.0.0
+</code></pre>
+
+<p>Then give them your public IP address. In Linux, run <code>ip addr</code> to see it.</p>
+<h2 id="hosting-freely-with-auditorium-publish">Hosting freely with <code>auditorium publish</code></h2>
+<p>If your audience cannot reach you on the local network, or the computer
+where the slideshow runs is not the one where you will be presenting, then
+you need a way to proxy your slideshow to a public URL.</p>
+<p>Enter <code>auditorium publish</code>, a command (and related service) that will relay
+your slideshow to <a href="http://auditorium.apiad.net">auditorium.apiad.net</a>.
+The slideshow still runs on your computer, but it is connected through websockets
+with a server that renders the slide and proxies all incoming requests back to your machine.</p>
+<p>To use it, simple run:</p>
+<pre><code class="bash">auditorium publish [file] --name [your-slideshow-name]
+</code></pre>
+
+<p>Then head over to <code>http://auditorium.apiad.net/your-slideshow-name/</code> and enjoy!</p>
+<blockquote>
+<p><strong>NOTE:</strong> This service is provided as-is with no guarantees whatsoever. The service runs
+on a development server that is restarted often (at least twice a day), so slideshows are <strong>not</strong> guaranteed to stay
+up for a long time. Don't use this service in mission critical presentations.</p>
+</blockquote>
+<p>If you need finer control then you can host the server yourself on your own infrastructure
+and thus ensure that it's online when you need it. Just run:</p>
+<pre><code class="bash">auditorium server [--host HOST] [--port PORT]
+</code></pre>
+
+<p>Make sure the server is publicly accessible. You'll probably use some kind of web server,
+or <code>--host 0.0.0.0</code> and <code>--port 80</code> which you can totally do since <code>auditorium</code> ships
+with <code>uvicorn</code> which is a fully fledged production web server.
+Then publish to your own address with:</p>
+<pre><code class="bash">auditorium publish [file] --name [name] --server [ws://your-server:port] # or wss://
+</code></pre>
+
+<h2 id="hosting-temporarily-through-ngrok">Hosting temporarily through <code>ngrok</code></h2>
+<p>Another option is to use <a href="https://ngrok.com/"><code>ngrok</code></a>.
+It creates a tunnel between your computer and ngrok's servers, and gives you a public, secure (HTTPS)
+and free URL that back-tunnels to your <code>localhost:port</code>.</p>
+<p>It's very <a href="https://ngrok.com/docs">easy to setup</a>. Once <code>ngrok</code> is installed, just run the
+usual <code>auditorium run [file]</code> and in another terminal run:</p>
+<pre><code class="bash">ngrok http 6789
+</code></pre>
+
+<p>It will answer with a temporal, auto-generated URL that you can give the audience.
+The upside is that everything is being run on your computer but published through a public
+URL, which means anyone on the world can see it.
+The downside is that it only works for as long as you have <code>ngrok</code> running.
+Plus, every time you run it, it generates a different public URL.
+The do have paid plans for securing a custom domain.</p>
+<h2 id="hosting-static-files-at-github-pages">Hosting static files at Github Pages</h2>
+<p>If your slideshow is purely static, then you ran run:</p>
+<pre><code class="bash">auditorium render [file] &gt; index.html
+</code></pre>
+
+<p>Then upload the file to a Github repository.
+Using <a href="https://pages.github.com/">Github Pages</a> will allow you to
+publicly serve this HTML anywhere in the world.
+The downside is no animations or interactive logic.</p>
+<h2 id="hosting-as-serverless-functions-at-nowsh">Hosting as serverless functions at <code>now.sh</code></h2>
 <p>Another option is to host the static presentation and backend at <a href="https://now.sh">now.sh</a>.
-If you don't know what <a href="https://now.sh">now.sh</a> is, go and <a href="https://zeit.co/docs">read about it</a> first.
+If you don't know what <a href="https://now.sh">now.sh</a> is, go and <a href="https://zeit.co/docs">read about it</a> first.</p>
+<p>This is actually how we host the demo at <a href="https://auditorium-demo.apiad.net">auditorium-demo.apiad.net</a>.
 The <a href="https://github.com/apiad/auditorium/tree/master/demo">demo</a> folder folder shows the layout you need to comply with for hosting a slideshow at <a href="https://now.sh">now.sh</a>, such that the backend logic works as well.</p>
-<p>In short, these are the basic steps:</p>
-<ol>
-<li>Make sure your <code>slideshow.py</code> (or whatever the name) slideshow file has the following line:</li>
-</ol>
+<p>Make sure your <code>slideshow.py</code> (or whatever the name) slideshow file has the following line:</p>
 <pre><code class="python">from auditorium import Show
 
 show = Show(&quot;My Awesome Show&quot;)
 app = show.app # &lt;--- This line
 </code></pre>
 
-<p>This will allow <code>now.sh</code> serverless functions to find your slideshow's underlying <code>fastapi</code> application, and automagically make the backend logic work.</p>
-<ol>
-<li>Make a folder for uploading to <code>now.sh</code>, let's call it <code>my-show</code> and an <code>api</code> folder inside.</li>
-</ol>
+<p>This will allow <code>now.sh</code> serverless functions to find your slideshow's underlying <code>fastapi</code> application, and automagically make the backend logic work. Make a folder for uploading to <code>now.sh</code>, let's call it <code>my-show</code> and an <code>api</code> folder inside.</p>
 <pre><code class="bash">mkdir -p /path/to/my-show/api
 </code></pre>
 
-<ol>
-<li>Render the HTML.</li>
-</ol>
+<p>Render the HTML.</p>
 <pre><code class="bash">auditorium render /path/to/slideshow.py &gt; /path/to/my-show/index.html
 </code></pre>
 
-<ol>
-<li>Have your <code>slideshow.py</code> copied to <code>my-show/api/update.py</code></li>
-</ol>
+<p>Have your <code>slideshow.py</code> copied to <code>my-show/api/update.py</code></p>
 <pre><code class="bash">cp /path/to/slideshow.py /path/to/my-show/api/update.py
 </code></pre>
 
-<ol>
-<li>Add a <code>now.json</code> file with an adequate configuration. This one works for the demo (replace <code>name</code> with your name):</li>
-</ol>
+<p>Add a <code>now.json</code> file with an adequate configuration. This one works for the demo (replace <code>name</code> with your name):</p>
 <pre><code class="json">{
     &quot;name&quot;: &quot;auditorium-demo&quot;,
     &quot;rewrites&quot;: [
@@ -168,16 +230,12 @@ app = show.app # &lt;--- This line
 }
 </code></pre>
 
-<ol>
-<li>Add a <code>requirements.txt</code> file with your requirements. This one works for the demo:</li>
-</ol>
+<p>Add a <code>requirements.txt</code> file with your requirements. This one works for the demo:</p>
 <pre><code class="ini">auditorium # This is basically mandatory :)
 matplotlib # Stuff you use in your slides
 </code></pre>
 
-<ol>
-<li><a href="https://zeit.co/docs#install-now-cli">Install</a> and run <code>now</code> inside the <code>my-show</code> folder. If you are using the <a href="https://hub.docker.com/r/auditorium/auditorium-dev">development docker images</a>, <code>now</code> is already installed for you.</li>
-</ol>
+<p>Finally <a href="https://zeit.co/docs#install-now-cli">install</a> and run <code>now</code> inside the <code>my-show</code> folder. If you are using the <a href="https://hub.docker.com/r/auditorium/auditorium-dev">development docker images</a>, <code>now</code> is already installed for you.</p>
               
             </div>
           </div>
